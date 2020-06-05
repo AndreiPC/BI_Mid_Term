@@ -1,6 +1,6 @@
 from proteinDictionary import Proteins
 
-def getProteinSequence(sequence):
+def getLongestProteinSequence(sequence):
     startCDN = ['AUG']
     stopCDN = ['UAA', 'UAG', 'UGA']
     proteinList = []
@@ -8,10 +8,6 @@ def getProteinSequence(sequence):
     counter = 0
     increment = 1
     startEncountered = False
-
-    
-
-#Stop trasncribing needs to be reset to false after encountering one stop
 
     for nucleotide in sequence:
         try:
@@ -22,6 +18,7 @@ def getProteinSequence(sequence):
                 increment = 3
 
             elif codon in stopCDN and startEncountered == True:
+                increment = 1
                 startEncountered = False
                 proteinList.append(temp)
                 temp = []
@@ -33,17 +30,4 @@ def getProteinSequence(sequence):
         except Exception:
             pass
 
-    
-    #daca cel mai mare array e mai mare decat restul secventei iesi
-
-
-    return proteinList
-
-
-
-
-def longestProteinSequence(listOfSequences):
-    if(not isinstance(listOfSequences, list)): 
-        return(0)
-    return(max([len(listOfSequences),] + [len(subl) for subl in listOfSequences if isinstance(subl, list)] +
-        [longestProteinSequence(subl) for subl in listOfSequences]))
+    return max(proteinList,key=len)
